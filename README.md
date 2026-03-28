@@ -56,23 +56,22 @@ models={
     "ElasticNet":ElasticNet(alpha=1.0,l1_ratio=0.5)
 }
 
-results={}
+results = {}
 
 for name, model in models.items():
-    pipeline=Pipeline([
-        ('poly',PolynomialFeatures(degree=2)),
-        ('regressor',model)
+    pipeline = Pipeline([
+        ('poly', PolynomialFeatures(degree=2)),
+        ('regressor', model)
     ])
+    
+    pipeline.fit(x_train, y_train)
+    predictions = pipeline.predict(x_test)
 
-pipeline.fit(x_train,y_train)
+    mse = mean_squared_error(y_test, predictions)
+    r2 = r2_score(y_test, predictions)
+    mae = mean_absolute_error(y_test, predictions)
 
-predictions=pipeline.predict(x_test)
-
-mse=mean_squared_error(y_test,predictions)
-r2=r2_score(y_test,predictions)
-mae=mean_absolute_error(y_test,predictions)
-
-results[name]={'MSE':mse,'R^2 Score':r2,'MAE':mae}
+    results[name] = {'MSE': mse, 'R^2 Score': r2, 'MAE': mae}
 
 print("Name: Lakshiya Rajkumar")
 print("Reg No: 212225240076")
@@ -80,26 +79,26 @@ print("Reg No: 212225240076")
 for model_name, metrics in results.items():
     print(f"{model_name} - Mean Squared Error: {metrics ['MSE']:.2f}, R^2 Score: {metrics['R^2 Score']:.2f}")
 
-results_df = pd.DataFrame (results).T
+results_df = pd.DataFrame(results).T
 results_df.reset_index(inplace=True)
 results_df.rename(columns={'index': 'Model'}, inplace=True)
 
-plt.figure(figsize=(12, 5))
-
-plt.subplot(1, 2, 1)
+plt.figure(figsize=(6,5))
 sns.barplot(x='Model', y='MSE', data=results_df, palette='viridis')
 plt.title('Mean Squared Error (MSE)')
-plt.ylabel('MSE')
-plt.xticks (rotation=45)
+plt.xticks(rotation=45);
+plt.show()
 
-plt.subplot(1, 2, 2)
+plt.figure(figsize=(6,5))
+
 sns.barplot(x='Model', y='R^2 Score', data=results_df, palette='viridis')
-plt.title('R^2 Score')
-plt.ylabel('R^2 Score')
-plt.xticks (rotation=45)
 
+plt.title('R² Score')
+plt.xlabel('Model')
+plt.ylabel('R² Score')
 
-plt.tight_layout()
+plt.xticks(rotation=45);
+
 plt.show()
 
 Developed by: Lakshiya Rajkumar
@@ -108,12 +107,9 @@ RegisterNumber:  25000390
 ```
 
 ## Output:
-![alt text](<Screenshot 2026-02-25 084137.png>)
-![alt text](<Screenshot 2026-02-25 084156.png>)
-![alt text](<Screenshot 2026-02-25 084209.png>)
-![alt text](<Screenshot 2026-02-25 084244.png>)
-![alt text](<Screenshot 2026-02-25 084307.png>)
-
+<img width="691" height="142" alt="Screenshot 2026-03-28 104956" src="https://github.com/user-attachments/assets/252df4ff-7093-4931-a34e-7506d0481ac4" />
+<img width="536" height="513" alt="5 1" src="https://github.com/user-attachments/assets/e69c9298-2aa6-4b79-97ee-9d13062e79c7" />
+<img width="536" height="513" alt="5 2" src="https://github.com/user-attachments/assets/4615038c-46c0-4312-9f17-acc4f5898038" />
 
 ## Result:
 Thus, Ridge, Lasso, and ElasticNet regularization models were implemented successfully to predict the car price and the model's performance was evaluated using R² score and Mean Squared Error.
